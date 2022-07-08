@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}
+  Подписки
+{% endblock %}
+{% block content %}
+  {% include 'includes/switcher.html' %}
+  {% if not page_obj %}
+        <h1>У вас нет подписок</h1> 
+      {% else %}
+        <h1>Ваши избранные авторы</h1>
+    {% endif %}
+  {% for post in page_obj %}
+    {% include 'includes/generator_card.html' %}  
+    {% if post.group %}    
+      <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы</a>
+    {% endif %}
+    {% if not forloop.last %}<hr>{% endif %}
+  {% endfor %} 
+  {% include 'includes/paginator.html' %}
+{% endblock content %}

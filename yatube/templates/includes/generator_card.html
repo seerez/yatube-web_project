@@ -1,0 +1,16 @@
+<article>
+  <ul>
+      <li>
+        Автор: {{ post.author.get_full_name }}
+        <a href="{% url 'posts:profile' post.author %}">все посты пользователя</a>
+      </li>
+      <li>
+        Дата публикации: {{ post.pub_date|date:"d E Y" }}
+      </li>
+    </ul>
+</article>
+{%include 'includes/picture.html'%}
+<p>{{ post.text|linebreaksbr }}</p>
+{% if visibility is not False%}
+    <a href="{% url 'posts:post_detail' post.id %}">подробная информация</a>
+{% endif %}  
