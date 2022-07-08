@@ -205,12 +205,12 @@ class PostsPagesTests(TestCase):
         self.assertEqual(len(response.context['page_obj']), 10)
 
     def test_posts_follow(self):
-        """Авторизованный пользователь может подписываться и отписываться"""
+        """Авторизованный пользователь может подписываться"""
         user2 = User.objects.create_user(username='TestingAccount2')
         authorized_client2 = Client()
         authorized_client2.force_login(user2)
         expected_quantity_of_objects_after_follow = 1
-        expected_quantity_of_objects_after_unfollow = 0
+        # expected_quantity_of_objects_after_unfollow = 0
         authorized_client2.get(
             reverse('posts:profile_follow', kwargs={'username': self.user})
         )
@@ -219,6 +219,13 @@ class PostsPagesTests(TestCase):
             Follow.objects.count(),
             "Пользователь не может подписаться"
         )
+
+    def test_posts_unfollow(self):
+        """Авторизированный пользователь может отписаться"""
+        user2 = User.objects.create_user(username='TestingAccount2')
+        authorized_client2 = Client()
+        authorized_client2.force_login(user2)
+        expected_quantity_of_objects_after_unfollow = 0
         authorized_client2.get(
             reverse('posts:profile_unfollow', kwargs={'username': self.user})
         )

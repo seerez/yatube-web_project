@@ -11,6 +11,6 @@
 </article>
 {%include 'includes/picture.html'%}
 <p>{{ post.text|linebreaksbr }}</p>
-{% if visibility is not False%}
+{% if visibility is not False %}
     <a href="{% url 'posts:post_detail' post.id %}">подробная информация</a>
 {% endif %}  

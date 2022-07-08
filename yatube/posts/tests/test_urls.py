@@ -1,5 +1,6 @@
 from http import HTTPStatus
 
+from django.core.cache import cache
 from django.test import Client, TestCase
 
 from ..models import Group, Post, User
@@ -47,6 +48,7 @@ class PostsUrlTests(TestCase):
         self.authorized_client.force_login(self.user)
         self.client_reader = Client()
         self.client_reader.force_login(self.user_reader)
+        cache.clear()
 
     def test_guest_url(self):
         for path in self.guest_url.keys():
@@ -82,3 +84,8 @@ class PostsUrlTests(TestCase):
             follow=True
         )
         self.assertRedirects(response, f'/posts/{self.post.id}/')
+
+    def test_posts_urls_unexisting_page(self):
+        """Проверка ошибки 404"""
+        response = self.guest_client.get('core/404/')
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
